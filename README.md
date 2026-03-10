@@ -1,210 +1,191 @@
-## FocusGuard AI — Real-Time Phone Usage Detection System
+🚀 FocusGuard AI — Real-Time Phone Usage Detection System
 
-**FocusGuard AI** is a production-grade computer vision system that uses YOLOv8 to detect mobile phone usage in front of a webcam and trigger immediate alerts.  
-It is designed as a practical, maintainable reference implementation that can be adapted to focus/productivity tools, compliance monitoring, or educational environments.
+FocusGuard AI is a real-time computer vision system that detects mobile phone usage in front of a webcam and triggers immediate alerts.
 
-![Python](https://img.shields.io/badge/Python-3.9%2B-blue?logo=python)
-![YOLOv8](https://img.shields.io/badge/YOLOv8-Ultralytics-orange)
-![OpenCV](https://img.shields.io/badge/OpenCV-4.x-green)
-![License](https://img.shields.io/badge/License-MIT-lightgrey)
+The system uses YOLOv8 object detection with OpenCV to monitor a live camera stream and identify when a person and a mobile phone appear simultaneously in the frame, indicating potential distraction.
 
----
+FocusGuard AI is designed as a clean, production-style reference implementation demonstrating how to build a real-time monitoring pipeline using modern computer vision tools.
 
-## Overview
+🧠 Project Overview
 
-FocusGuard AI continuously monitors a webcam stream and raises an alert when a **person** and a **mobile phone** are detected in the same frame. The core goals of this project are:
+FocusGuard AI continuously processes frames from a webcam and performs AI-based object detection to identify:
 
-- **Operational practicality**: Runs on a standard laptop CPU without requiring a dedicated GPU
-- **Clear separation of concerns**: Detection, decision logic, monitoring loop, and utilities are cleanly isolated
-- **Extensibility**: Easy to plug in alternative models, alert channels, or storage mechanisms
-- **Portfolio readiness**: Code and structure are suitable to demonstrate real-world computer vision skills
+👤 Person
 
----
+📱 Cell phone
 
-## Key Features
+If both are detected within the same frame, the system:
 
-| Feature | Description |
-|---|---|
-| **Real-time detection** | Streams webcam at up to 30 FPS (hardware-dependent) |
-| **YOLOv8n inference** | Lightweight nano model optimised for CPU workloads |
-| **Dual detection logic** | Alerts trigger only when both `person` and `cell phone` classes are present |
-| **Audio alert** | 880 Hz warning tone via `pygame` to immediately notify the user |
-| **Visual overlay** | Red bounding boxes and an overlay banner when phone usage is detected |
-| **Evidence capture** | Timestamped PNG screenshots written to `evidence/` for later review |
-| **Alert cooldown** | Configurable cooldown (default 5 seconds) to prevent alert spamming |
-| **Session statistics** | Frames processed, alert count, and session duration summarised on exit |
+Triggers a warning sound
 
----
+Displays a visual alert overlay
 
-## When To Use This Project
+Captures a timestamped evidence screenshot
 
-- **Personal productivity**: Detect and discourage phone usage while working or studying
-- **Demonstrations and workshops**: Show a complete, understandable pipeline from webcam to model to alert
-- **Baseline for further work**: Start from this implementation to add advanced analytics, dashboards, or cloud logging
+Updates session statistics
 
-This repository is intentionally kept focused and free of unnecessary abstractions so it can serve as a solid foundation for experimentation.
+The project emphasizes clarity, modular design, and real-world practicality, making it ideal for learning, demonstrations, and portfolio presentation.
 
----
+✨ Key Features
+Feature	Description
+Real-time detection	Continuous webcam monitoring with live object detection
+YOLOv8 inference	Lightweight YOLOv8n model optimized for CPU execution
+Dual detection logic	Alerts trigger only when both person and cell phone are detected
+Audio warning	Immediate sound alert using pygame
+Visual alerts	Bounding boxes and on-screen notification when phone usage is detected
+Evidence capture	Automatic screenshot logging for each detection event
+Alert cooldown	Configurable delay to prevent repeated alert spam
+Session statistics	Tracks frames processed, alert count, and session duration
+🎯 Use Cases
 
-## Project Structure
+FocusGuard AI can serve as a foundation for several practical applications:
 
-```text
+Productivity monitoring
+Detect phone distractions while studying or working.
+
+Educational demonstrations
+Showcase a complete AI → detection → action pipeline.
+
+Research prototypes
+Build experiments involving real-time computer vision.
+
+Compliance monitoring systems
+Adapt the framework for supervised environments.
+
+🏗 Project Structure
 focusguard-ai/
 │
-├── app.py                  # Entry point — run this to start monitoring
+├── app.py                  # Application entry point
 ├── requirements.txt
 ├── README.md
 │
 ├── config/
-│   └── settings.py         # All tunable parameters
+│   └── settings.py         # Adjustable runtime parameters
 │
 ├── core/
-│   ├── detector.py         # YOLOv8 model loading + inference orchestration
-│   ├── logic.py            # Alert decision logic + cooldown handling
-│   └── monitoring.py       # Webcam loop + drawing overlays and HUD
+│   ├── detector.py         # YOLOv8 model loading and inference
+│   ├── logic.py            # Detection decision logic
+│   └── monitoring.py       # Webcam capture and processing loop
 │
 ├── utils/
-│   ├── audio_alert.py      # pygame-based sound alert management
-│   ├── evidence_saver.py   # Screenshot creation with timestamped filenames
-│   └── stats.py            # Session statistics tracking and reporting
+│   ├── audio_alert.py      # Alert sound management
+│   ├── evidence_saver.py   # Screenshot capture utilities
+│   └── stats.py            # Session statistics tracking
 │
 ├── assets/
-│   └── alert.wav           # Warning sound (generated on setup, optional)
+│   └── alert.wav           # Warning sound
 │
-├── evidence/               # Auto-saved screenshots (git-ignored)
-└── models/                 # Optional: pre-downloaded YOLO weights
-```
+├── evidence/               # Saved detection screenshots
+│
+└── models/                 # Optional model storage
 
----
+This modular structure keeps responsibilities clearly separated:
 
-## Quick Start
+Detector → AI inference
 
-### 1. Clone and enter the repository
+Logic → Alert decisions
 
-```bash
+Monitoring → Camera loop
+
+Utilities → Alerts, evidence, statistics
+
+⚡ Quick Start
+1️⃣ Clone the repository
 git clone https://github.com/<your-username>/focusguard-ai.git
 cd focusguard-ai
-```
-
-### 2. Create and activate a virtual environment
-
-```bash
+2️⃣ Create a virtual environment
 python3 -m venv venv
-source venv/bin/activate       # macOS / Linux
-venv\Scripts\activate          # Windows
-```
 
-### 3. Install dependencies
+Activate it:
 
-```bash
+macOS / Linux
+
+source venv/bin/activate
+
+Windows
+
+venv\Scripts\activate
+3️⃣ Install dependencies
 pip install -r requirements.txt
-```
 
-On first run, Ultralytics will automatically download the YOLOv8n weights file (`yolov8n.pt`) if it is not already present.
+On the first run, the YOLOv8 nano model (yolov8n.pt) will automatically download.
 
-### 4. Start monitoring
-
-```bash
+4️⃣ Start the monitoring system
 python app.py
-```
 
-Press `q` inside the video window to gracefully terminate the session and print the session statistics.
+Press q in the camera window to stop the system and display session statistics.
 
----
+⚙ Configuration
 
-## Configuration
+Runtime settings are defined in:
 
-Runtime behaviour is configured via `config/settings.py`:
+config/settings.py
 
-```python
-CONFIDENCE_THRESHOLD = 0.5     # Detection confidence (0.0 – 1.0)
-ALERT_COOLDOWN       = 5       # Seconds between alerts
-SAVE_EVIDENCE        = True    # Save screenshots on alert
-CAMERA_INDEX         = 0       # 0 = built-in webcam
-MODEL_NAME           = "yolov8n.pt"
-```
+Example configuration:
 
-Typical adjustments:
-
-- Increase `CONFIDENCE_THRESHOLD` if you see too many false positives
-- Increase `ALERT_COOLDOWN` if alerts are firing too frequently for your use case
-- Set `SAVE_EVIDENCE` to `False` if you only care about real-time alerts and not historical screenshots
-- Change `CAMERA_INDEX` if you have multiple cameras attached
-
----
-
-## High-Level Architecture
-
-```text
+CONFIDENCE_THRESHOLD = 0.5
+ALERT_COOLDOWN = 5
+SAVE_EVIDENCE = True
+CAMERA_INDEX = 0
+MODEL_NAME = "yolov8n.pt"
+Configuration Guide
+Setting	Description
+CONFIDENCE_THRESHOLD	Minimum detection confidence
+ALERT_COOLDOWN	Delay between alerts
+SAVE_EVIDENCE	Enable/disable screenshot saving
+CAMERA_INDEX	Select webcam device
+MODEL_NAME	YOLOv8 model to use
+🧩 System Architecture
 Webcam (OpenCV)
-     │
-     ▼
+        │
+        ▼
 Frame Capture
-     │
-     ▼
-YOLOv8 Detector  ──→  detected: person, cell phone
-     │
-     ▼
-Alert Logic  (person AND phone?)
-     │
-  ┌──┴──────────────┐
-  ▼                 ▼
-Audio Alert   Evidence Saver
-(pygame)      (cv2.imwrite)
-     │
-     ▼
-Session Stats
-```
+        │
+        ▼
+YOLOv8 Object Detection
+        │
+        ▼
+Detection Logic
+(person + phone?)
+        │
+   ┌────┴────────────┐
+   ▼                 ▼
+Audio Alert      Evidence Capture
+(pygame)         (cv2.imwrite)
+        │
+        ▼
+Session Statistics
 
-The architecture deliberately keeps responsibilities simple:
+The architecture is intentionally simple and modular, making it easy to extend with additional features.
 
-- `detector.py` focuses on model loading and inference
-- `logic.py` encapsulates when and how an alert should fire
-- `monitoring.py` coordinates the capture → inference → alert pipeline
+📊 Evidence Logging
 
----
+When SAVE_EVIDENCE is enabled, screenshots are stored in:
 
-## Dependencies
+evidence/
 
-| Package | Purpose |
-|---|---|
-| `ultralytics` | YOLOv8 model loading and inference |
-| `opencv-python` | Webcam capture, frame handling, and drawing overlays |
-| `numpy` | Numerical operations on model outputs |
-| `pygame` | Cross-platform audio playback for alerts |
+Example:
 
-Refer to `requirements.txt` for exact versions used in this project.
-
----
-
-## Evidence Captures
-
-When `SAVE_EVIDENCE` is enabled, screenshots are automatically stored under `evidence/` using timestamped filenames:
-
-```text
 evidence/
 ├── phone_usage_2026-03-10_14-32-15.png
 └── phone_usage_2026-03-10_14-35-42.png
-```
 
-These captures are useful for:
+These logs can be used for:
 
-- Reviewing when and how often distractions occurred
-- Building small datasets for further experimentation or fine-tuning
-- Auditing alert quality over time
+Reviewing distraction events
 
----
+Building training datasets
 
-## Sample Session Output
+Evaluating detection accuracy
 
-```text
+🖥 Example Session Output
 ========================================
    FocusGuard AI — Phone Usage Monitor
 ========================================
 
 [Detector] Loading model: yolov8n.pt
-[Monitor]  Camera 0 opened @ target 30 FPS.
-[Monitor]  Press 'q' inside the video window to quit.
+[Monitor]  Camera started.
+[Monitor]  Press 'q' to quit.
 
 [Logic]    Phone usage detected — triggering alert.
 [Evidence] Screenshot saved → evidence/phone_usage_2026-03-10_14-32-15.png
@@ -212,54 +193,24 @@ These captures are useful for:
 ==========================================
         FocusGuard AI — Session Stats
 ==========================================
-  Frames Processed : 1420
-  Phone Alerts     : 3
-  Session Duration : 2m 32s
+Frames Processed : 1420
+Phone Alerts     : 3
+Session Duration : 2m 32s
 ==========================================
-```
+⚡ Performance
 
-This output is intended to be self-explanatory and can be extended with additional metrics if needed.
+Typical performance on a standard laptop:
 
----
+Metric	Value
+Target FPS	30
+Typical CPU FPS	15–25
+Model size	~6 MB
+RAM usage	~300 MB
 
-## Performance Characteristics
+For improved performance:
 
-Actual performance depends heavily on your hardware and camera, but typical behaviour is:
+Use GPU acceleration
 
-| Metric | Value |
-|---|---|
-| Target FPS | 30 |
-| Typical CPU FPS | 15–25 (modern MacBook or Intel i5 and above) |
-| Model size | ~6 MB (`yolov8n`) |
-| RAM usage | ~300 MB |
+Reduce frame resolution
 
-For significantly higher throughput or lower latency, consider:
-
-- Switching to a GPU-backed environment
-- Reducing input frame size before inference
-- Moving to a lighter model variant if available
-
----
-
-## Development Notes
-
-- The codebase favours readability and explicit control flow over premature optimisation
-- Side effects (audio, file I/O, display) are isolated in utility modules where possible
-- The structure is suitable for incremental improvements such as:
-  - Adding alternative alert channels (desktop notifications, webhooks, etc.)
-  - Logging events to disk or a remote service
-  - Wrapping the core logic in a GUI or web interface
-
----
-
-## License
-
-This project is licensed under the MIT License. You are free to use, modify, and distribute it, subject to the terms of the license.
-
----
-
-## Acknowledgements
-
-- [Ultralytics YOLOv8](https://github.com/ultralytics/ultralytics)
-- [OpenCV](https://opencv.org/)
-- [COCO Dataset](https://cocodataset.org/) for pre-trained detection classes
+Use lighter models if available
