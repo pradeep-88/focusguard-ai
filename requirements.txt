@@ -1,0 +1,4 @@
+ultralytics==8.4.21
+opencv-python==4.13.0.92
+numpy==2.4.3
+pygame==2.6.1

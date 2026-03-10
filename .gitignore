@@ -1,0 +1,21 @@
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Model weights and large artifacts
+yolov8n.pt
+models/*.pt
+models/*.onnx
+
+# Generated evidence and data
+evidence/
+
+# OS / editor files
+.DS_Store
+.idea/
+.vscode/

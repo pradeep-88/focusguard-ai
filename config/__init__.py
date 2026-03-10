@@ -1,0 +1,1 @@
+# FocusGuard AI — config package

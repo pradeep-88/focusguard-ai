@@ -1,0 +1,1 @@
+# FocusGuard AI — core package
