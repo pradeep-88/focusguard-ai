@@ -247,11 +247,6 @@ Typical performance on a standard laptop:
 
 ---
 
-## License
-
-This project is licensed under the MIT License. You are free to use, modify, and distribute it subject to the terms of the license.
-
----
 
 ## Acknowledgements
 
