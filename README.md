@@ -1,5 +1,7 @@
 # FocusGuard AI — Real-Time Phone Usage Detection System
 
+![FocusGuard demo](assets/phone_detection_sequence.gif)
+
 FocusGuard AI is a real-time computer vision system that detects mobile phone usage in front of a webcam and triggers immediate alerts. The system uses YOLOv8 object detection with OpenCV to monitor a live camera stream and identify when a **person** and a **mobile phone** appear simultaneously in the frame, indicating potential distraction.
 
 FocusGuard AI is designed as a clean, production-style reference implementation demonstrating how to build a real-time monitoring pipeline using modern computer vision tools.
